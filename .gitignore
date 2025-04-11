@@ -7,8 +7,8 @@ __pycache__/
 *.so
 
 #Nvim stuff
-.*.swp
-.*.swo
+*.py.swp
+*.py.swo
 
 # Distribution / packaging
 .Python
