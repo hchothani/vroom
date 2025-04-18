@@ -1,6 +1,6 @@
 import torch
 from torchvision import transforms
-from src.dataset import organize_dataset, create_dataloaders
+from src.dataset import get_dataset_paths, create_dataloaders, verify_dataset
 from src.model import YOLOWrapper
 from src.continual_learning import create_cl_benchmark, create_cl_strategy
 from src.visualization import visualize_predictions, analyze_forgetting
@@ -8,53 +8,65 @@ from src.visualization import visualize_predictions, analyze_forgetting
 # Set random seeds for reproducibility
 torch.manual_seed(42)
 
-# Define transformations
-transform = transforms.Compose([
-    transforms.Resize((640, 640)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+def main():
+    # Define the base path to your dataset
+    base_path = 'data/vehicle-yolo-dataset'
 
-# Organize dataset
-dataset_paths = organize_dataset('data/vehicle_dataset')
+    # Verify the dataset structure
+    if not verify_dataset(base_path):
+        print("Dataset verification failed. Please check the dataset structure.")
+        return
 
-# Create dataloaders
-train_loader, val_loader, train_dataset, val_dataset = create_dataloaders(dataset_paths, transform)
+    # Get dataset paths
+    dataset_paths = get_dataset_paths(base_path)
 
-# Initialize model
-model = YOLOWrapper(num_classes=6)
+    # Define transformations
+    transform = transforms.Compose([
+        transforms.Resize((640, 640)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
 
-# Define class groups for tasks
-class_groups = [[0, 1], [2, 3], [4, 5]]  # Car+Threewheel, Bus+Truck, Motorbike+Van
+    # Create dataloaders
+    train_loader, val_loader, train_dataset, val_dataset = create_dataloaders(dataset_paths, transform)
 
-# Create continual learning benchmark
-cl_benchmark = create_cl_benchmark(train_dataset, val_dataset, class_groups)
+    # Initialize model
+    model = YOLOWrapper(num_classes=6)
 
-# Create continual learning strategy
-cl_strategy = create_cl_strategy(model, strategy_name='ewc', lr=0.001)
+    # Define class groups for tasks
+    class_groups = [[0, 1], [2, 3], [4, 5]]  # Car+Threewheel, Bus+Truck, Motorbike+Van
 
-# Train on the continual learning benchmark
-print("Starting Continual Learning Training...")
-results = []
+    # Create continual learning benchmark
+    cl_benchmark = create_cl_benchmark(train_dataset, val_dataset, class_groups)
 
-for experience in cl_benchmark.train_stream:
-    print(f"Start training on experience {experience.current_experience}")
-    cl_strategy.train(experience)
-    eval_results = cl_strategy.eval(cl_benchmark.test_stream[:experience.current_experience+1])
-    results.append(eval_results)
-    print(f"Finished training on experience {experience.current_experience}")
+    # Create continual learning strategy
+    cl_strategy = create_cl_strategy(model, strategy_name='ewc', lr=0.001)
 
-print("Training completed!")
+    # Train on the continual learning benchmark
+    print("Starting Continual Learning Training...")
+    results = []
 
-# Evaluate the final model on all tasks
-print("Final Evaluation:")
-for i, experience in enumerate(cl_benchmark.test_stream):
-    print(f"Evaluating on Task {i+1}:")
-    cl_strategy.eval(experience)
+    for experience in cl_benchmark.train_stream:
+        print(f"Start training on experience {experience.current_experience}")
+        cl_strategy.train(experience)
+        eval_results = cl_strategy.eval(cl_benchmark.test_stream[:experience.current_experience+1])
+        results.append(eval_results)
+        print(f"Finished training on experience {experience.current_experience}")
 
-# Visualize some predictions
-test_indices = [0, 10, 20, 30, 40]
-visualize_predictions(model, val_dataset, test_indices)
+    print("Training completed!")
 
-# Analyze forgetting
-analyze_forgetting(results)
+    # Evaluate the final model on all tasks
+    print("Final Evaluation:")
+    for i, experience in enumerate(cl_benchmark.test_stream):
+        print(f"Evaluating on Task {i+1}:")
+        cl_strategy.eval(experience)
+
+    # Visualize some predictions
+    test_indices = [0, 10, 20, 30, 40]
+    visualize_predictions(model, val_dataset, test_indices)
+
+    # Analyze forgetting
+    analyze_forgetting(results)
+
+if __name__ == "__main__":
+    main()

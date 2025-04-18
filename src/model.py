@@ -5,16 +5,22 @@ class YOLOWrapper(torch.nn.Module):
     def __init__(self, model_path=None, num_classes=6):
         super().__init__()
         
+        # Initialize YOLO model
         if model_path:
             self.model = YOLO(model_path)
         else:
+            # Start with a pretrained model
             self.model = YOLO('yolov8n.pt')
         
-        # Update the model's class count
-        self.model.names = {i: name for i, name in enumerate([
+        # Define class names
+        self.class_names = [
             "Car", "Threewheel", "Bus", "Truck", "Motorbike", "Van"
-        ][:num_classes])}
-        self.model.nc = num_classes
+        ][:num_classes]
+        
+        # Update model's class information
+        # Instead of directly setting names, we'll use the proper method
+        # or keep track of names separately if no setter is available
+        self.num_classes = num_classes
         
         # Set training mode
         self.training = True
@@ -81,21 +87,25 @@ class YOLOWrapper(torch.nn.Module):
         if formatted_targets:
             return torch.cat(formatted_targets, dim=0)
         else:
-            return torch.zeros((0, 6), device=self.model.device)
+            return torch.zeros((0, 6), device=self.model.device if hasattr(self.model, 'device') else 'cpu')
     
     def train(self, mode=True):
         self.training = mode
-        self.model.train = mode
+        if hasattr(self.model, 'train'):
+            self.model.train = mode
         return self
     
     def eval(self):
         self.training = False
-        self.model.train = False
+        if hasattr(self.model, 'train'):
+            self.model.train = False
         return self
     
     def parameters(self):
         return self.model.parameters()
 
     def to(self, device):
-        self.model.to(device)
+        if hasattr(self.model, 'to'):
+            self.model.to(device)
         return self
+

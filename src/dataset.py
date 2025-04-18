@@ -56,9 +56,8 @@ class YOLODataset(Dataset):
         target = {
             'boxes': boxes,
             'labels': labels,
-            'image_id': torch.tensor([idx]),
-            'orig_size': torch.tensor([orig_height, orig_width]),
         }
+        print(target)
         
         return image, target
     
@@ -150,6 +149,8 @@ def create_dataloaders(dataset_paths, transform, batch_size=8):
         shuffle=False,
         collate_fn=collate_fn
     )
+    print(val_dataset)
+
     
     return train_loader, val_loader, train_dataset, val_dataset
 
