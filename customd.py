@@ -33,13 +33,15 @@ from avalanche.training.supervised.naive_object_detection import (
     ObjectDetectionTemplate,
 )
 
-from avalanche.evaluation.metrics import timing_metrics, loss_metrics
+from avalanche.evaluation.metrics import timing_metrics, loss_metrics, accuracy_metrics, forgetting_metrics
 from avalanche.evaluation.metrics.detection import DetectionMetrics
-from avalanche.logging import InteractiveLogger
+from avalanche.logging import InteractiveLogger, TextLogger
 from avalanche.training.plugins import LRSchedulerPlugin, EvaluationPlugin
 from torchvision.transforms import ToTensor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 
 # This sets the root logger to write to stdout (your console).
 # Your script/app needs to call this somewhere at least once.
@@ -58,8 +60,8 @@ def main(args):
     # ---------
 
     # --- TRANSFORMATIONS
-    train_transform = ToTensor()
-    test_transform = ToTensor()
+#    train_transform = ToTensor()
+#    test_transform = ToTensor()
     # ---------
 
     # --- BENCHMARK CREATION
@@ -67,8 +69,8 @@ def main(args):
     n_exps = 5
     benchmark = split_penn_fudan(
         n_experiences=n_exps,
-        train_transform=train_transform,
-        eval_transform=test_transform,
+        train_transform=None,
+        eval_transform=None,
     )
     # ---------
 
@@ -95,7 +97,7 @@ def main(args):
         # 2) Replace the pre-trained head with a new one
 #        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
-        # now get the number of input features for the mask classifier
+       # now get the number of input features for the mask classifier
 #        in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
 #        hidden_layer = 256
         # and replace the mask predictor with a new one
@@ -105,6 +107,9 @@ def main(args):
 
     model = obtain_base_model(segmentation=False)
     model = model.to(device)
+    print(len(list(model.parameters())))
+    print([p.requires_grad for p in model.parameters()][:5])  # Should show "True"
+
 
     # Define the optimizer and the scheduler
     params = [p for p in model.parameters() if p.requires_grad]
@@ -118,13 +123,19 @@ def main(args):
     lr_scheduler = torch.optim.lr_scheduler.LinearLR(
         optimizer, start_factor=warmup_factor, total_iters=warmup_iters
     )
+    
+    # Loggers
+
+    loggers =[]
+    loggers.append(TextLogger(open('log.txt', 'a')))
+    loggers.append(InteractiveLogger())
 
     # CREATE THE STRATEGY INSTANCE (NAIVE)
     cl_strategy = ObjectDetectionTemplate(
         model=model,
         optimizer=optimizer,
         train_mb_size=train_mb_size,
-        train_epochs=1,
+        train_epochs=15,
         eval_mb_size=train_mb_size,
         device=device,
         plugins=[
@@ -137,9 +148,10 @@ def main(args):
         ],
         evaluator=EvaluationPlugin(
             timing_metrics(epoch=True),
-            loss_metrics(epoch_running=True),
-            make_penn_fudan_metrics(detection_only=args.detection_only),
-            loggers=[InteractiveLogger()],
+            loss_metrics(epoch_running=True, minibatch=True, experience=True),
+            forgetting_metrics(experience=True),
+            make_penn_fudan_metrics(detection_only=True),
+            loggers=loggers,
         ),
     )
 
@@ -152,12 +164,33 @@ def main(args):
         cl_strategy.train(experience, num_workers=4)
         print("Training completed")
 
-        cl_strategy.eval(benchmark.test_stream, num_workers=4)
+        cl_strategy.eval(benchmark.test_stream, num_workers=8)
         print("Evaluation completed")
 
 
 def obtain_base_model(segmentation: bool):
-    model = YOLOWrapper(num_classes=6)
+    torchvision_is_old_version = parse(torch.__version__) < parse("0.13")
+
+    pretrain_argument = dict()
+
+    if torchvision_is_old_version:
+        pretrain_argument["pretrained"] = True
+    else:
+        if segmentation:
+            pretrain_argument["weights"] = (
+                torchvision.models.detection.mask_rcnn.MaskRCNN_ResNet50_FPN_Weights.DEFAULT
+            )
+        else:
+            pretrain_argument["weights"] = (
+                torchvision.models.detection.faster_rcnn.FasterRCNN_ResNet50_FPN_Weights.DEFAULT
+            )
+
+    if segmentation:
+        model = torchvision.models.detection.maskrcnn_resnet50_fpn(**pretrain_argument)
+    else:
+        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(
+            **pretrain_argument
+        )
     return model
 
 
@@ -197,16 +230,21 @@ def split_penn_fudan(
     dataset_paths = get_dataset_paths(base_path)
 
     # Define transformations
-    transform = transforms.Compose([
+    dtransform = transforms.Compose([
         transforms.Resize((640, 640)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
+    transform = A.Compose([
+        A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ToTensorV2()
+        ])
+
     # Create dataloaders
     train_loader, val_loader, train_dataset, val_dataset = create_dataloaders(dataset_paths, transform)
-#    for image, target in val_dataset:
-#        print(image)
+    for image, targets in val_dataset:
+        print(targets)
 #    dataset = PennFudanDataset(root=root_path)
     # The test size of 50 is used here:
     # https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html

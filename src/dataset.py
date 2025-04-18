@@ -43,19 +43,24 @@ class YOLODataset(Dataset):
                     data = line.strip().split()
                     class_id = int(data[0])
                     x_center, y_center, width, height = map(float, data[1:5])
-                    x_min = (x_center - width/2) * orig_width
-                    y_min = (y_center - height/2) * orig_height
-                    x_max = (x_center + width/2) * orig_width
-                    y_max = (y_center + height/2) * orig_height
+                    x_min = (x_center - width/2) / orig_width
+                    y_min = (y_center - height/2) / orig_height
+                    x_max = (x_center + width/2) / orig_width
+                    y_max = (y_center + height/2) / orig_height
                     boxes.append([x_min, y_min, x_max, y_max])
                     labels.append(class_id)
         
         boxes = torch.tensor(boxes, dtype=torch.float32)
         labels = torch.tensor(labels, dtype=torch.long)
+        area = torch.tensor(orig_width*orig_height, dtype=torch.float32)
+        image_id = torch.tensor(idx, dtype=torch.long)
+
         
         target = {
+            'image_id': image_id, 
             'boxes': boxes,
             'labels': labels,
+            'area': area
         }
         print(target)
         

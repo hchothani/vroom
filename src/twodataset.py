@@ -23,16 +23,27 @@ class YOLODataset(Dataset):
 
     def _preload_targets(self):
         for img_file in self.image_files:
+            i = 0
             label_path = os.path.join(self.label_dir, os.path.splitext(img_file)[0] + '.txt')
-            boxes, labels = self._parse_label_file(label_path)
+            boxes, labels, area, iscrowd = self._parse_label_file(label_path)
             self.targets.append({
+                'image_id': torch.tensor(i, dtype=torch.int64),
                 'boxes': torch.tensor(boxes, dtype=torch.float32),
-                'labels': torch.tensor(labels, dtype=torch.int64)
+                'labels': torch.tensor(labels, dtype=torch.int64),
+                'area': torch.tensor(area, dtype=torch.float32),
+                'iscrowd': torch.tensor(iscrowd, dtype=torch.int64)
             })
+            i = i+1
 
     def _parse_label_file(self, label_path):
         boxes = []
         labels = []
+        area = []   
+        iscrowd = []
+        for img_file in self.image_files:
+            img = Image.open(os.path.join(self.image_dir, img_file))
+            owidth,  oheight = img.size
+#            print(f"{img_file} : {owidth} , {oheight}")
         if os.path.exists(label_path):
             with open(label_path, 'r') as f:
                 for line in f:
@@ -41,14 +52,26 @@ class YOLODataset(Dataset):
                     x_center, y_center, width, height = map(float, data[1:5])
                     
                     # Relative coordinates
-                    x_min = x_center - width/2
-                    y_min = y_center - height/2
-                    x_max = x_center + width/2
-                    y_max = y_center + height/2
+                    x_center = x_center*owidth
+                    y_center = y_center*oheight
+                    widthp = width*owidth
+                    heightp = height*oheight
+                    aa = widthp*heightp
+                    x_min = int(x_center - widthp/2)
+                    y_min = int(y_center - heightp/2)
+                    x_max = int(x_center + widthp/2)
+                    y_max = int(y_center + heightp/2)
+#                    boxes = [x_min, y_min, width, height]
+#                    labels = [class_id]
+
                     
+                    area.append(aa)
                     boxes.append([x_min, y_min, x_max, y_max])
                     labels.append(class_id)
-        return boxes, labels
+                    iscrowd.append(0)
+
+        print(f"boxes: {boxes}, label: {labels}, area: {area}")
+        return boxes, labels, area, iscrowd
 
     def __getitem__(self, idx):
         img_file = self.image_files[idx]
@@ -61,12 +84,12 @@ class YOLODataset(Dataset):
             # Convert to numpy array for Albumentations
             transformed = self.transform(
                 image=np.array(image),
-                bboxes=target['boxes'].numpy(),
-                labels=target['labels'].numpy()
+#                bboxes=target['boxes'].numpy(),
+#                labels=target['labels'].numpy()
             )
             image = transformed['image']
-            target['boxes'] = torch.tensor(transformed['bboxes'], dtype=torch.float32)
-            target['labels'] = torch.tensor(transformed['labels'], dtype=torch.int64)
+#            target['boxes'] = torch.tensor(transformed['bboxes'], dtype=torch.float32)
+#            target['labels'] = torch.tensor(transformed['labels'], dtype=torch.int64)
         
         return image, target
 
@@ -143,7 +166,7 @@ def create_dataloaders(dataset_paths, transform, batch_size=8):
     val_dataset = YOLODataset(
         dataset_paths['val_img_dir'],
         dataset_paths['val_label_dir'],
-        transform=transform
+        transform=transform,
     )
     
     def collate_fn(batch):
