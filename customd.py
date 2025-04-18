@@ -33,7 +33,7 @@ from avalanche.training.supervised.naive_object_detection import (
     ObjectDetectionTemplate,
 )
 
-from avalanche.evaluation.metrics import timing_metrics, loss_metrics, accuracy_metrics, forgetting_metrics
+from avalanche.evaluation.metrics import timing_metrics, loss_metrics, forgetting_metrics
 from avalanche.evaluation.metrics.detection import DetectionMetrics
 from avalanche.logging import InteractiveLogger, TextLogger
 from avalanche.training.plugins import LRSchedulerPlugin, EvaluationPlugin
@@ -149,7 +149,6 @@ def main(args):
         evaluator=EvaluationPlugin(
             timing_metrics(epoch=True),
             loss_metrics(epoch_running=True, minibatch=True, experience=True),
-            forgetting_metrics(experience=True),
             make_penn_fudan_metrics(detection_only=True),
             loggers=loggers,
         ),
