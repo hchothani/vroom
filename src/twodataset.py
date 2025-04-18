@@ -22,10 +22,9 @@ class YOLODataset(Dataset):
         self._preload_targets()
 
     def _preload_targets(self):
-        for img_file in self.image_files:
-            i = 0
+        for i, img_file in enumerate(self.image_files):
             label_path = os.path.join(self.label_dir, os.path.splitext(img_file)[0] + '.txt')
-            boxes, labels, area, iscrowd = self._parse_label_file(label_path)
+            boxes, labels, area, iscrowd = self._parse_label_file(label_path, img_file)
             self.targets.append({
                 'image_id': torch.tensor(i, dtype=torch.int64),
                 'boxes': torch.tensor(boxes, dtype=torch.float32),
@@ -33,22 +32,21 @@ class YOLODataset(Dataset):
                 'area': torch.tensor(area, dtype=torch.float32),
                 'iscrowd': torch.tensor(iscrowd, dtype=torch.int64)
             })
-            i = i+1
 
-    def _parse_label_file(self, label_path):
+    def _parse_label_file(self, label_path, img_file):
         boxes = []
         labels = []
         area = []   
         iscrowd = []
-        for img_file in self.image_files:
-            img = Image.open(os.path.join(self.image_dir, img_file))
-            owidth,  oheight = img.size
+        img_path = os.path.join(self.image_dir, img_file)
+        with Image.open(img_path) as img:
+            owidth, oheight = img.size
 #            print(f"{img_file} : {owidth} , {oheight}")
         if os.path.exists(label_path):
             with open(label_path, 'r') as f:
                 for line in f:
                     data = line.strip().split()
-                    class_id = int(data[0]) + 1  # Shift for background class
+                    class_id = int(data[0])  # Shift for background class
                     x_center, y_center, width, height = map(float, data[1:5])
                     
                     # Relative coordinates

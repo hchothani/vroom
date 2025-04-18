@@ -1,0 +1,3 @@
+Average Accuracy (AA): 0.6183
+Backward Transfer (BWT): 0.0707
+Forward Transfer (FWT): 0.0406

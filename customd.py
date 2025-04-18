@@ -76,7 +76,7 @@ def main(args):
 
     # MODEL CREATION
 
-    num_classes = benchmark.n_classes + 1  # N classes + background
+    num_classes = benchmark.n_classes  # N classes + background
    # if args.detection_only:
         # Ingore the segmentation task
         # load a model pre-trained on COCO
@@ -135,7 +135,7 @@ def main(args):
         model=model,
         optimizer=optimizer,
         train_mb_size=train_mb_size,
-        train_epochs=15,
+        train_epochs=5,
         eval_mb_size=train_mb_size,
         device=device,
         plugins=[

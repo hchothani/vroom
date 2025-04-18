@@ -1,0 +1,200 @@
+-- >> Start of training phase << --
+-- Starting training on experience 0 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.2528
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.2325
+	Time_Epoch/train_phase/train_stream/Task000 = 82.4563
+Epoch 1 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0919
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.1357
+	Time_Epoch/train_phase/train_stream/Task000 = 83.7323
+Epoch 2 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0802
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0864
+	Time_Epoch/train_phase/train_stream/Task000 = 84.7500
+Epoch 3 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0612
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0694
+	Time_Epoch/train_phase/train_stream/Task000 = 83.7907
+Epoch 4 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0406
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0569
+	Time_Epoch/train_phase/train_stream/Task000 = 85.4064
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP = 0.5685
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP50 = 0.7530
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP75 = 0.6675
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APl = 0.5885
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APm = 0.4086
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APs = 0.0883
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@1 = 0.5515
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@10 = 0.6496
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@100 = 0.6496
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARl@100 = 0.6640
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARm@100 = 0.5390
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARs@100 = 0.1620
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.0000
+-- >> End of eval phase << --
+-- >> Start of training phase << --
+-- Starting training on experience 1 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.1155
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.1001
+	Time_Epoch/train_phase/train_stream/Task000 = 84.6313
+Epoch 1 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0461
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0690
+	Time_Epoch/train_phase/train_stream/Task000 = 84.5589
+Epoch 2 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0524
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0563
+	Time_Epoch/train_phase/train_stream/Task000 = 85.2520
+Epoch 3 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0878
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0452
+	Time_Epoch/train_phase/train_stream/Task000 = 85.4914
+Epoch 4 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0325
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0421
+	Time_Epoch/train_phase/train_stream/Task000 = 85.3510
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP = 0.6091
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP50 = 0.7692
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP75 = 0.7161
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APl = 0.6262
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APm = 0.4979
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APs = 0.0722
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@1 = 0.5714
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@10 = 0.6670
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@100 = 0.6670
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARl@100 = 0.6824
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARm@100 = 0.5506
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARs@100 = 0.1793
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.0000
+-- >> End of eval phase << --
+-- >> Start of training phase << --
+-- Starting training on experience 2 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.1074
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0824
+	Time_Epoch/train_phase/train_stream/Task000 = 84.1750
+Epoch 1 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0645
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0625
+	Time_Epoch/train_phase/train_stream/Task000 = 84.4809
+Epoch 2 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0480
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0499
+	Time_Epoch/train_phase/train_stream/Task000 = 84.4014
+Epoch 3 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0242
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0431
+	Time_Epoch/train_phase/train_stream/Task000 = 83.4886
+Epoch 4 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0566
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0370
+	Time_Epoch/train_phase/train_stream/Task000 = 83.5673
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP = 0.6285
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP50 = 0.7848
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP75 = 0.7334
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APl = 0.6453
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APm = 0.4950
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APs = 0.0712
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@1 = 0.5786
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@10 = 0.6774
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@100 = 0.6774
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARl@100 = 0.6919
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARm@100 = 0.5513
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARs@100 = 0.0933
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.0000
+-- >> End of eval phase << --
+-- >> Start of training phase << --
+-- Starting training on experience 3 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0596
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0808
+	Time_Epoch/train_phase/train_stream/Task000 = 81.4960
+Epoch 1 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.1315
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0590
+	Time_Epoch/train_phase/train_stream/Task000 = 82.3656
+Epoch 2 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0427
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0488
+	Time_Epoch/train_phase/train_stream/Task000 = 81.4962
+Epoch 3 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0310
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0436
+	Time_Epoch/train_phase/train_stream/Task000 = 82.1106
+Epoch 4 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0695
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0390
+	Time_Epoch/train_phase/train_stream/Task000 = 81.8174
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP = 0.6462
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP50 = 0.7903
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP75 = 0.7435
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APl = 0.6620
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APm = 0.4999
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APs = 0.0703
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@1 = 0.5857
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@10 = 0.6873
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@100 = 0.6873
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARl@100 = 0.7026
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARm@100 = 0.5444
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARs@100 = 0.0880
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.0000
+-- >> End of eval phase << --
+-- >> Start of training phase << --
+-- Starting training on experience 4 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.2059
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0887
+	Time_Epoch/train_phase/train_stream/Task000 = 87.0093
+Epoch 1 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0514
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0601
+	Time_Epoch/train_phase/train_stream/Task000 = 85.5772
+Epoch 2 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0577
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0467
+	Time_Epoch/train_phase/train_stream/Task000 = 86.6082
+Epoch 3 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0240
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0404
+	Time_Epoch/train_phase/train_stream/Task000 = 85.1034
+Epoch 4 ended.
+	Loss_MB/train_phase/train_stream/Task000 = 0.0344
+	RunningLoss_Epoch/train_phase/train_stream/Task000 = 0.0382
+	Time_Epoch/train_phase/train_stream/Task000 = 85.0530
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP = 0.6392
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP50 = 0.7999
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AP75 = 0.7555
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APl = 0.6533
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APm = 0.5152
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/APs = 0.1194
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@1 = 0.5799
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@10 = 0.6806
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/AR@100 = 0.6806
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARl@100 = 0.6924
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARm@100 = 0.5713
+	DetectionMetrics/eval_phase/test_stream/Exp000/bbox/ARs@100 = 0.2700
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.0000
+-- >> End of eval phase << --
